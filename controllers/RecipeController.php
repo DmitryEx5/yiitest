@@ -3,10 +3,10 @@
 namespace app\controllers;
 
 use app\models\Component;
-use app\models\ComponentSearch;
 use Yii;
 use app\models\Recipe;
 use app\models\RecipeSearch;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -17,13 +17,13 @@ use yii\filters\VerbFilter;
 class RecipeController extends Controller
 {
     /**
-     * {@inheritdoc}
+     * @return array|array[]
      */
     public function behaviors()
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -38,7 +38,7 @@ class RecipeController extends Controller
     {
         $searchModel = new RecipeSearch();
 
-        $components = [];;
+        $components = [];
         foreach ((new Component())->findAll([]) as $component) {
             $components[$component->id] = $component->name;
         }
@@ -108,6 +108,7 @@ class RecipeController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws StaleObjectException|\Throwable
      */
     public function actionDelete($id)
     {

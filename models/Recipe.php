@@ -6,6 +6,8 @@ use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\BaseActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "recipe".
@@ -60,7 +62,16 @@ class Recipe extends ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::class,
+            'timestamp' => [
+                'class' => TimestampBehavior::class,
+                'attributes' => [
+                    BaseActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                    BaseActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => function(){
+                    return gmdate("Y-m-d H:i:s");
+                },
+            ],
         ];
     }
 

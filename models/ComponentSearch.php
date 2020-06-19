@@ -6,10 +6,12 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * ComponentSearch represents the model behind the search form of `app\models\Component`.
+ * Class ComponentSearch
+ * @package app\models
  */
 class ComponentSearch extends Component
 {
+
     /**
      * @return array|array[]
      */
@@ -17,7 +19,7 @@ class ComponentSearch extends Component
     {
         return [
             [['id', 'isHidden'], 'integer'],
-            [['name', 'created_at', 'updated_at'], 'safe'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -67,4 +69,5 @@ class ComponentSearch extends Component
 
         return $dataProvider;
     }
+
 }
