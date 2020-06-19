@@ -4,7 +4,6 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Component;
 
 /**
  * ComponentSearch represents the model behind the search form of `app\models\Component`.
@@ -12,18 +11,18 @@ use app\models\Component;
 class ComponentSearch extends Component
 {
     /**
-     * {@inheritdoc}
+     * @return array|array[]
      */
     public function rules()
     {
         return [
             [['id', 'isHidden'], 'integer'],
-            [['name', 'created', 'updated'], 'safe'],
+            [['name', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
     /**
-     * {@inheritdoc}
+     * @return array|array[]
      */
     public function scenarios()
     {
@@ -60,8 +59,8 @@ class ComponentSearch extends Component
         $query->andFilterWhere([
             'id' => $this->id,
             'isHidden' => $this->isHidden,
-            'created' => $this->created,
-            'updated' => $this->updated,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

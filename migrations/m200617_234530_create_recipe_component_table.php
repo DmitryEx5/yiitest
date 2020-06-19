@@ -15,8 +15,8 @@ class m200617_234530_create_recipe_component_table extends Migration
         $this->createTable('{{%recipe_component}}', [
             'recipe_id' => $this->integer(),
             'component_id' => $this->integer(),
-            'created' => $this->dateTime(),
-            'updated' => $this->dateTime(),
+            'created_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime(),
             'PRIMARY KEY(recipe_id, component_id)',
         ]);
 

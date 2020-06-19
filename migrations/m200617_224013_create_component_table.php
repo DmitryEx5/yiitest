@@ -17,8 +17,8 @@ class m200617_224013_create_component_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull()->unique(),
             'isHidden' => $this->tinyInteger()->defaultValue(0)->notNull(),
-            'created' => $this->dateTime()->notNull(),
-            'updated' => $this->dateTime()->notNull(),
+            'created_at' => $this->dateTime()->notNull(),
+            'updated_at' => $this->dateTime()->notNull(),
         ]);
     }
 

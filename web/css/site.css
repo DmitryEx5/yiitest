@@ -113,3 +113,45 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.col-xs-five,
+.col-sm-five,
+.col-md-five,
+.col-lg-five,
+.col-xl-five {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.col-xs-five {
+    width: 20%;
+    float: left;
+}
+
+@media (min-width: 640px) {
+    .col-sm-five {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 768px) {
+    .col-md-five {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 1024px) {
+    .col-lg-five {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 1440px) {
+    .col-xl-five {
+        width: 20%;
+        float: left;
+    }
+}

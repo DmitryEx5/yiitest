@@ -17,8 +17,8 @@ class m200618_091736_create_user_table extends Migration
             'name' => $this->string()->unique()->notNull(),
             'password' => $this->string()->notNull(),
             'role' => $this->string()->notNull()->defaultValue('user'),
-            'created' => $this->dateTime(),
-            'updated' => $this->dateTime(),
+            'created_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime(),
         ]);
     }
 

@@ -2,7 +2,10 @@
 
 namespace app\models;
 
-use Yii;
+use yii\base\InvalidConfigException;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "component".
@@ -10,13 +13,13 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property int $isHidden
- * @property string $created
- * @property string $updated
+ * @property string $created_at
+ * @property string $updated_at
  *
  * @property RecipeComponent[] $recipeComponents
  * @property Recipe[] $recipes
  */
-class Component extends \yii\db\ActiveRecord
+class Component extends ActiveRecord
 {
     /**
      * @return string
@@ -32,9 +35,8 @@ class Component extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created', 'updated'], 'required'],
+            [['name'], 'required'],
             [['isHidden'], 'integer'],
-            [['created', 'updated'], 'safe'],
             [['name'], 'string', 'max' => 255],
             [['name'], 'unique'],
         ];
@@ -48,26 +50,34 @@ class Component extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'isHidden' => 'Is Hidden',
-            'created' => 'Created',
-            'updated' => 'Updated',
+            'isHidden' => 'Is Hidden'
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return array
      */
-    public function getRecipeComponents()
+    public function behaviors()
     {
-        return $this->hasMany(RecipeComponent::className(), ['component_id' => 'id']);
+        return [
+            TimestampBehavior::class,
+        ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
-     * @throws \yii\base\InvalidConfigException
+     * @return ActiveQuery
+     */
+    public function getRecipeComponents()
+    {
+        return $this->hasMany(RecipeComponent::class, ['component_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
      */
     public function getRecipes()
     {
-        return $this->hasMany(Recipe::className(), ['id' => 'recipe_id'])->viaTable('recipe_component', ['component_id' => 'id']);
+        return $this->hasMany(Recipe::class, ['id' => 'recipe_id'])->viaTable('recipe_component', ['component_id' => 'id']);
     }
 }

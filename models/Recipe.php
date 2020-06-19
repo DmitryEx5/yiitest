@@ -2,7 +2,10 @@
 
 namespace app\models;
 
-use Yii;
+use yii\base\InvalidConfigException;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "recipe".
@@ -10,14 +13,16 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property int $isHidden
+ * @property string $created_at
+ * @property string $updated_at
  *
  * @property RecipeComponent[] $recipeComponents
  * @property Component[] $components
  */
-class Recipe extends \yii\db\ActiveRecord
+class Recipe extends ActiveRecord
 {
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public static function tableName()
     {
@@ -25,7 +30,7 @@ class Recipe extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array|array[]
      */
     public function rules()
     {
@@ -38,7 +43,7 @@ class Recipe extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array|string[]
      */
     public function attributeLabels()
     {
@@ -50,22 +55,30 @@ class Recipe extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[RecipeComponents]].
-     *
-     * @return \yii\db\ActiveQuery
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
+
+
+    /**
+     * @return ActiveQuery
      */
     public function getRecipeComponents()
     {
-        return $this->hasMany(RecipeComponent::className(), ['recipe_id' => 'id']);
+        return $this->hasMany(RecipeComponent::class, ['recipe_id' => 'id']);
     }
 
     /**
-     * Gets query for [[Components]].
-     *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
+     * @throws InvalidConfigException
      */
     public function getComponents()
     {
-        return $this->hasMany(Component::className(), ['id' => 'component_id'])->viaTable('recipe_component', ['recipe_id' => 'id']);
+        return $this->hasMany(Component::class, ['id' => 'component_id'])->viaTable('recipe_component', ['recipe_id' => 'id']);
     }
 }

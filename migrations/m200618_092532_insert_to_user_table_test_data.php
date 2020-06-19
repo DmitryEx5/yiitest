@@ -18,8 +18,8 @@ class m200618_092532_insert_to_user_table_test_data extends Migration
             'name' => 'admin',
             'password' => '123123',
             'role' => 'admin',
-            'created' => $date,
-            'updated' => $date,
+            'created_at' => $date,
+            'updated_at' => $date,
         ]);
     }
 

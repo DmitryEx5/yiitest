@@ -12,16 +12,32 @@ use yii\widgets\ActiveForm;
 <div class="recipe-search">
 
     <?php
+    $styleDDL = 'width:19%; margin-right: 1%; float:left;';
+    $styleLastDDL = 'width:20%; float:left;';
     $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= yii\helpers\Html::dropDownList('components[0]',null, $components) ?>
-    <?= yii\helpers\Html::dropDownList('components[1]',null, $components) ?>
-    <?= yii\helpers\Html::dropDownList('components[2]',null, $components) ?>
-    <?= yii\helpers\Html::dropDownList('components[3]',null, $components) ?>
-    <?= yii\helpers\Html::dropDownList('components[4]',null, $components) ?>
+    <div class="row">
+        <div class="col-md-five">
+            <?= yii\helpers\Html::dropDownList('components[0]',null, $components, ['class' => 'form-control']) ?>
+        </div>
+        <div class="col-md-five">
+            <?= yii\helpers\Html::dropDownList('components[1]',null, $components, ['class' => 'form-control']) ?>
+        </div>
+        <div class="col-md-five">
+            <?= yii\helpers\Html::dropDownList('components[2]',null, $components, ['class' => 'form-control']) ?>
+        </div>
+        <div class="col-md-five">
+            <?= yii\helpers\Html::dropDownList('components[3]',null, $components, ['class' => 'form-control']) ?>
+        </div>
+        <div class="col-md-five">
+            <?= yii\helpers\Html::dropDownList('components[4]',null, $components, ['class' => 'form-control']) ?>
+        </div>
+    </div>
+
+    <br>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
