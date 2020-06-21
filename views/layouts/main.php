@@ -35,23 +35,29 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    $items = [
+        ['label' => 'Главная', 'url' => ['/site/index']],
+    ];
+
+    if (Yii::$app->user->isGuest) {
+        $items[] = ['label' => 'Войти', 'url' => ['/site/login']];
+    } else {
+        if (Yii::$app->user->identity->role === 'admin') {
+            $items[] = ['label' => 'Блюда', 'url' => ['/recipe/index']];
+            $items[] = ['label' => 'Ингредиенты', 'url' => ['/component/index']];
+        }
+        $items[] ='<li>'
+        . Html::beginForm(['/site/logout'], 'post')
+        . Html::submitButton(
+            'Выход (' . Yii::$app->user->identity->name . ')',
+            ['class' => 'btn btn-link logout']
+        )
+        . Html::endForm()
+        . '</li>';
+    }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Главная', 'url' => ['/site/index']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Войти', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Выход (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
+        'items' => $items,
     ]);
     NavBar::end();
     ?>

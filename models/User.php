@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -18,6 +19,10 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    /**
+     * @var mixed|null
+     */
+    private $auth_key = '4342asdasd';
 
     /**
      * @return string
@@ -74,54 +79,65 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @param $password
+     * @param User $user
+     * @param string $password
+     * @return bool
      */
-    public function validatePassword($password)
+    public function validatePassword($user, $password)
     {
+        return $user->password === $password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
     }
 
     /**
      * @param int|string $id
-     * @return void|IdentityInterface|null
+     * @return User|IdentityInterface|null
      */
     public static function findIdentity($id)
     {
-        // TODO: Implement findIdentity() method.
+        return static::findOne($id);
     }
 
     /**
      * @param mixed $token
      * @param null $type
-     * @return void|IdentityInterface|null
+     * @return User|IdentityInterface|null
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        // TODO: Implement findIdentityByAccessToken() method.
+        return static::findOne(['access_token' => $token]);
     }
 
     /**
-     * @return int|string|void
+     * @return int|string
      */
     public function getId()
     {
-        // TODO: Implement getId() method.
+        return $this->id;
     }
 
     /**
-     * @return string|void
+     * @return mixed|string|null
      */
     public function getAuthKey()
     {
-        // TODO: Implement getAuthKey() method.
+        return $this->auth_key;
     }
 
     /**
      * @param string $authKey
-     * @return bool|void
+     * @return bool
      */
     public function validateAuthKey($authKey)
     {
-        // TODO: Implement validateAuthKey() method.
+        return $this->getAuthKey() === $authKey;
     }
 
 }
