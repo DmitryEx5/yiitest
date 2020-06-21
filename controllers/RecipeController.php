@@ -47,9 +47,7 @@ class RecipeController extends Controller
         }
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $columns = [
 
-        ];
         $componentColumns = [];
         if (!empty($recipes = $dataProvider->models)) {
             foreach ($recipes as $recipe) {
@@ -63,12 +61,9 @@ class RecipeController extends Controller
             }
         }
 
-        //$columns = array_merge($columns, );
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'components' => $components,
             'componentColumns' => $componentColumns,
         ]);
     }

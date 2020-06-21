@@ -6,8 +6,6 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RecipeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $components array */
-/* @var $columns array */
 /* @var $componentColumns array */
 
 $this->title = 'Recipes';
