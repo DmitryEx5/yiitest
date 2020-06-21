@@ -46,8 +46,8 @@ class RecipeComponent extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'recipe_id' => 'Recipe ID',
-            'component_id' => 'Component ID',
+            'recipe_id' => 'id Рецепта',
+            'component_id' => 'id Ингредиента',
         ];
     }
 

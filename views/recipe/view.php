@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Recipe */
+/* @var $components array */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Recipes', 'url' => ['index']];
@@ -34,6 +35,51 @@ $this->params['breadcrumbs'][] = $this->title;
             'isHidden',
             'created_at',
             'updated_at',
+            [
+                'label' => 'Ингредиент 1',
+                'format' => 'text',
+                'value' => function () use ($components) {
+                    return isset($components[0])
+                        ? $components[0]
+                        : '-';
+                }
+            ],
+            [
+                'label' => 'Ингредиент 2',
+                'format' => 'text',
+                'value' => function () use ($components) {
+                    return isset($components[1])
+                        ? $components[1]
+                        : '-';
+                }
+            ],
+            [
+                'label' => 'Ингредиент 3',
+                'format' => 'text',
+                'value' => function () use ($components) {
+                    return isset($components[2])
+                        ? $components[2]
+                        : '-';
+                }
+            ],
+            [
+                'label' => 'Ингредиент 4',
+                'format' => 'text',
+                'value' => function () use ($components) {
+                    return isset($components[3])
+                        ? $components[3]
+                        : '-';
+                }
+            ],
+            [
+                'label' => 'Ингредиент 5',
+                'format' => 'text',
+                'value' => function () use ($components) {
+                    return isset($components[4])
+                        ? $components[4]
+                        : '-';
+                }
+            ],
         ],
     ]) ?>
 

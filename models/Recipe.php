@@ -52,7 +52,7 @@ class Recipe extends ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Название',
-            'isHidden' => 'Is Hidden',
+            'isHidden' => 'Скрывать',
         ];
     }
 

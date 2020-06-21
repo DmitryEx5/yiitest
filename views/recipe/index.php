@@ -29,35 +29,35 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'name',
             [
-                'label' => 'Ингридиент 1',
+                'label' => 'Ингредиент 1',
                 'format' => 'text',
                 'value' => function ($data) use ($componentColumns) {
                     return $componentColumns[$data->id][0];
                 }
             ],
             [
-                'label' => 'Ингридиент 2',
+                'label' => 'Ингредиент 2',
                 'format' => 'text',
                 'value' => function ($data) use ($componentColumns) {
                     return $componentColumns[$data->id][1];
                 }
             ],
             [
-                'label' => 'Ингридиент 3',
+                'label' => 'Ингредиент 3',
                 'format' => 'text',
                 'value' => function ($data) use ($componentColumns) {
                     return $componentColumns[$data->id][2];
                 }
             ],
             [
-                'label' => 'Ингридиент 4',
+                'label' => 'Ингредиент 4',
                 'format' => 'text',
                 'value' => function ($data) use ($componentColumns) {
                     return $componentColumns[$data->id][3];
                 }
             ],
             [
-                'label' => 'Ингридиент 5',
+                'label' => 'Ингредиент 5',
                 'format' => 'text',
                 'value' => function ($data) use ($componentColumns) {
                     return $componentColumns[$data->id][4];

@@ -184,7 +184,7 @@ class RecipeController extends Controller
             foreach ($rcArray as $recipeComponent) {
                 $component = Component::findOne($recipeComponent->component_id);
                 if ($asArray) {
-                    $components[$component->id] = $component->name;
+                    $components[] = $component->name;
                 } else {
                     $components[] = $component;
                 }

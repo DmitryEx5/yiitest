@@ -51,8 +51,8 @@ class Component extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'isHidden' => 'Is Hidden'
+            'name' => 'Название',
+            'isHidden' => 'Скрывать'
         ];
     }
 
