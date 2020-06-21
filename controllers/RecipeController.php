@@ -2,7 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\Component;
+use app\models\ComponentSearch;
+use app\models\RecipeComponent;
 use Yii;
 use app\models\Recipe;
 use app\models\RecipeSearch;
@@ -39,9 +40,11 @@ class RecipeController extends Controller
         $searchModel = new RecipeSearch();
 
         $components = [];
-        foreach ((new Component())->findAll([]) as $component) {
-            $components[$component->id] = $component->name;
+        $componentModels = (new ComponentSearch())->search([])->models;
+        foreach ($componentModels as $componentModel) {
+            $components[$componentModel->id] = $componentModel->name;
         }
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -73,12 +76,31 @@ class RecipeController extends Controller
     {
         $model = new Recipe();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (!empty($post = Yii::$app->request->post())) {
+            $postComponentIds = $post['components'];
+            unset($post['components']);
+
+            if ($model->load($post) && $model->save()) {
+                foreach ($postComponentIds as $componentId) {
+                    $modelRecipeComponent = new RecipeComponent();
+                    $modelRecipeComponent->recipe_id = $model->id;
+                    $modelRecipeComponent->component_id = $componentId;
+                    $modelRecipeComponent->save();
+                }
+
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+
+        $components = [];
+        $componentModels = (new ComponentSearch())->search([])->models;
+        foreach ($componentModels as $componentModel) {
+            $components[$componentModel->id] = $componentModel->name;
         }
 
         return $this->render('create', [
             'model' => $model,
+            'components' => $components
         ]);
     }
 

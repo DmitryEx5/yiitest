@@ -37,7 +37,7 @@ class Recipe extends ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name'], 'required', 'message' => 'Заполните это поле.'],
             [['isHidden'], 'integer'],
             [['name'], 'string', 'max' => 155],
             [['name'], 'unique'],
@@ -51,7 +51,7 @@ class Recipe extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Название',
             'isHidden' => 'Is Hidden',
         ];
     }

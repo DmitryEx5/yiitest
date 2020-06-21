@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Recipe */
+/* @var $components array */
 
 $this->title = 'Create Recipe';
 $this->params['breadcrumbs'][] = ['label' => 'Recipes', 'url' => ['index']];
@@ -15,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'components' => $components
     ]) ?>
 
 </div>

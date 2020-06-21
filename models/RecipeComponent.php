@@ -67,8 +67,4 @@ class RecipeComponent extends ActiveRecord
         return $this->hasOne(Recipe::class, ['id' => 'recipe_id']);
     }
 
-    public function getRecipes()
-    {
-        //TODO: logic where choose some recipes to show
-    }
 }
