@@ -18,20 +18,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Component', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'name',
             'isHidden',
-            'created',
-            'updated',
-
+            ['attribute' => 'created_at', 'format' => ['date', 'php:Y-m-d H:i:s']],
+            ['attribute' => 'updated_at', 'format' => ['date', 'php:Y-m-d H:i:s']],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

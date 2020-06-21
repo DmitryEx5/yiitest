@@ -18,8 +18,7 @@ class ComponentSearch extends Component
     public function rules()
     {
         return [
-            [['id', 'isHidden'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'name'], 'safe'],
         ];
     }
 
@@ -28,7 +27,6 @@ class ComponentSearch extends Component
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
@@ -43,8 +41,6 @@ class ComponentSearch extends Component
     {
         $query = Component::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -52,12 +48,10 @@ class ComponentSearch extends Component
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'isHidden' => $this->isHidden,
