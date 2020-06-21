@@ -7,6 +7,8 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\RecipeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $components array */
+/* @var $columns array */
+/* @var $componentColumns array */
 
 $this->title = 'Recipes';
 $this->params['breadcrumbs'][] = $this->title;
@@ -22,9 +24,47 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => NULL,
+        'tableOptions' => [
+            'class' => 'table table-striped table-bordered'
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'name',
+            [
+                'label' => 'Ингридиент 1',
+                'format' => 'text',
+                'value' => function ($data) use ($componentColumns) {
+                    return $componentColumns[$data->id][0];
+                }
+            ],
+            [
+                'label' => 'Ингридиент 2',
+                'format' => 'text',
+                'value' => function ($data) use ($componentColumns) {
+                    return $componentColumns[$data->id][1];
+                }
+            ],
+            [
+                'label' => 'Ингридиент 3',
+                'format' => 'text',
+                'value' => function ($data) use ($componentColumns) {
+                    return $componentColumns[$data->id][2];
+                }
+            ],
+            [
+                'label' => 'Ингридиент 4',
+                'format' => 'text',
+                'value' => function ($data) use ($componentColumns) {
+                    return $componentColumns[$data->id][3];
+                }
+            ],
+            [
+                'label' => 'Ингридиент 5',
+                'format' => 'text',
+                'value' => function ($data) use ($componentColumns) {
+                    return $componentColumns[$data->id][4];
+                }
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

@@ -92,4 +92,14 @@ class Recipe extends ActiveRecord
     {
         return $this->hasMany(Component::class, ['id' => 'component_id'])->viaTable('recipe_component', ['recipe_id' => 'id']);
     }
+
+    /**
+     * @return array|ActiveRecord[]
+     * @throws InvalidConfigException
+     */
+    public function getComponentsAsArray()
+    {
+        return $this->hasMany(Component::class, ['id' => 'component_id'])->viaTable('recipe_component', ['recipe_id' => 'id'])->all();
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Component;
 use app\models\ComponentSearch;
 use app\models\RecipeComponent;
 use Yii;
@@ -46,11 +47,29 @@ class RecipeController extends Controller
         }
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $columns = [
+
+        ];
+        $componentColumns = [];
+        if (!empty($recipes = $dataProvider->models)) {
+            foreach ($recipes as $recipe) {
+                $_components = $recipe->getComponentsAsArray();
+                for ($i = 0; $i <= 4; $i++) {
+                    $componentColumns[$recipe->id][$i] = isset($_components[$i])
+                        ? $_components[$i]->name
+                        : '-';
+                }
+
+            }
+        }
+
+        //$columns = array_merge($columns, );
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'components' => $components,
+            'componentColumns' => $componentColumns,
         ]);
     }
 
@@ -64,6 +83,7 @@ class RecipeController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'components' => $this->findComponents($id, TRUE),
         ]);
     }
 
@@ -150,6 +170,32 @@ class RecipeController extends Controller
     {
         if (($model = Recipe::findOne($id)) !== null) {
             return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * @param integer $id
+     * @param bool $asArray
+     * @return Component[]|array
+     * @throws NotFoundHttpException
+     */
+    protected function findComponents($id, $asArray)
+    {
+        $rcArray = RecipeComponent::findAll(['recipe_id' => $id]);
+        $components = [];
+        if (!empty($rcArray)) {
+            foreach ($rcArray as $recipeComponent) {
+                $component = Component::findOne($recipeComponent->component_id);
+                if ($asArray) {
+                    $components[$component->id] = $component->name;
+                } else {
+                    $components[] = $component;
+                }
+            }
+
+            return $components;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
