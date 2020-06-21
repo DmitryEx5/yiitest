@@ -7,6 +7,9 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Recipe */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $components array */
+/* @var $selectedComponents array */
+/* @var $errors array */
+
 ?>
 
 <div class="recipe-form">
@@ -19,50 +22,85 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-md-2">
             <label class="control-label" for="components[0]">Ингредиент</label>
-            <?= yii\helpers\Html::dropDownList('components[0]', NULL, $components, [
-                'class' => 'form-control',
-                'prompt' => 'Выберите...',
-                'label' => '123',
-                'id' => 'component[0]',
-            ]) ?>
+            <?= yii\helpers\Html::dropDownList('components[0]', $model->id == NULL
+                ? NULL
+                : isset($selectedComponents[0])
+                    ? $selectedComponents[0]
+                    : NULL,
+                $components,
+                [
+                    'class' => 'form-control',
+                    'prompt' => 'Выберите...',
+                    'label' => '123',
+                    'id' => 'component[0]',
+                ]); ?>
         </div>
         <div class="col-md-2">
             <label class="control-label" for="components[1]">Ингредиент</label>
-            <?= yii\helpers\Html::dropDownList('components[1]', NULL, $components, [
-                'class' => 'form-control',
-                'prompt' => 'Выберите...',
-                'id' => 'component[1]',
-            ]) ?>
+            <?= yii\helpers\Html::dropDownList('components[1]', $model->id == NULL
+                ? NULL
+                : isset($selectedComponents[1])
+                    ? $selectedComponents[1]
+                    : NULL,
+                $components,
+                [
+                    'class' => 'form-control',
+                    'prompt' => 'Выберите...',
+                    'label' => '123',
+                    'id' => 'component[1]',
+                ]); ?>
         </div>
         <div class="col-md-2">
             <label class="control-label" for="components[2]">Ингредиент</label>
-            <?= yii\helpers\Html::dropDownList('components[2]', NULL, $components, [
-                'class' => 'form-control',
-                'prompt' => 'Выберите...',
-                'id' => 'component[2]',
-            ]) ?>
+            <?= yii\helpers\Html::dropDownList('components[2]', $model->id == NULL
+                ? NULL
+                : isset($selectedComponents[2])
+                    ? $selectedComponents[2]
+                    : NULL,
+                $components,
+                [
+                    'class' => 'form-control',
+                    'prompt' => 'Выберите...',
+                    'label' => '123',
+                    'id' => 'component[2]',
+                ]); ?>
         </div>
         <div class="col-md-2">
             <label class="control-label" for="components[3]">Ингредиент</label>
-            <?= yii\helpers\Html::dropDownList('components[3]', NULL, $components, [
-                'class' => 'form-control',
-                'prompt' => 'Выберите...',
-                'id' => 'component[3]',
-            ]) ?>
+            <?= yii\helpers\Html::dropDownList('components[3]', $model->id == NULL
+                ? NULL
+                : isset($selectedComponents[3])
+                    ? $selectedComponents[3]
+                    : NULL,
+                $components,
+                [
+                    'class' => 'form-control',
+                    'prompt' => 'Выберите...',
+                    'label' => '123',
+                    'id' => 'component[3]',
+                ]); ?>
         </div>
         <div class="col-md-2">
             <label class="control-label" for="components[4]">Ингредиент</label>
-            <?= yii\helpers\Html::dropDownList('components[4]', NULL, $components, [
-                'class' => 'form-control',
-                'prompt' => 'Выберите...',
-                'id' => 'component[4]',
-            ]) ?>
+            <?= yii\helpers\Html::dropDownList('components[4]', $model->id == NULL
+                ? NULL
+                : isset($selectedComponents[4])
+                    ? $selectedComponents[4]
+                    : NULL,
+                $components,
+                [
+                    'class' => 'form-control',
+                    'prompt' => 'Выберите...',
+                    'label' => '123',
+                    'id' => 'component[4]',
+                ]); ?>
         </div>
     </div>
 
-    <div class="row" id="components-error" style="display: none;">
+    <div class="row" id="components-error" <?= isset($errors['notEnoughComponents']) ? '' : 'style="display: none;"'?>>
         <div class="col-md-12">
-            <div class="alert-danger text-center" style="padding: 15px"><strong>Выберите больше ингредиентов</strong></div>
+            <div class="alert-danger text-center" style="padding: 15px"><strong>Выберите больше ингредиентов</strong>
+            </div>
         </div>
     </div>
 
@@ -106,12 +144,14 @@ use yii\widgets\ActiveForm;
         }
     });
     
-    selects.on('change', function () {
+    selects.on('change', showHideComponents);
+    
+    function showHideComponents() {
         let _this = $(this).get(0);
         $('select').each(function (index, element) {
             if (element.id !== _this.id) {
                 $(element).find('option').each(function (componentIndex, component) {
-                    if (componentIndex === _this.selectedIndex) {
+                    if (componentIndex === _this.selectedIndex && componentIndex) {
                         $(component).hide();
                     } else {
                         if (check(componentIndex, component)) {
@@ -121,7 +161,7 @@ use yii\widgets\ActiveForm;
                 });
             }
         });
-    });
+    }
 
     function check(componentIndex, component) {
         let needShow = true;
@@ -132,12 +172,10 @@ use yii\widgets\ActiveForm;
         });
         
         return needShow;
-    }"
+    }
+    
+    $(document).ready(function() {
+        $('select').trigger('change');
+    });
+    "
 ); ?>
-
-<!--<script>-->
-<!--    if (countSelected < 2) {-->
-<!--        $('#components-error').slideToggle();-->
-<!--        console.log($('#components-error'));-->
-<!--    }-->
-<!--</script>-->

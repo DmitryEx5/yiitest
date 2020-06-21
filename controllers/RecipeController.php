@@ -12,6 +12,7 @@ use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * RecipeController implements the CRUD actions for Recipe model.
@@ -90,20 +91,27 @@ class RecipeController extends Controller
     public function actionCreate()
     {
         $model = new Recipe();
+        $errors = [];
 
         if (!empty($post = Yii::$app->request->post())) {
             $postComponentIds = $post['components'];
             unset($post['components']);
 
-            if ($model->load($post) && $model->save()) {
-                foreach ($postComponentIds as $componentId) {
-                    $modelRecipeComponent = new RecipeComponent();
-                    $modelRecipeComponent->recipe_id = $model->id;
-                    $modelRecipeComponent->component_id = $componentId;
-                    $modelRecipeComponent->save();
-                }
+            if (count($postComponentIds) > 1) {
+                if ($model->load($post) && $model->save()) {
+                    foreach ($postComponentIds as $componentId) {
+                        if (!empty($componentId)) {
+                            $modelRecipeComponent = new RecipeComponent();
+                            $modelRecipeComponent->recipe_id = $model->id;
+                            $modelRecipeComponent->component_id = $componentId;
+                            $modelRecipeComponent->save();
+                        }
+                    }
 
-                return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                $errors['notEnoughComponents'] = 1;
             }
         }
 
@@ -115,27 +123,66 @@ class RecipeController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'components' => $components
+            'components' => $components,
+            'errors' => $errors,
         ]);
     }
 
     /**
-     * Updates an existing Recipe model.
-     * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return string|Response
+     * @throws NotFoundHttpException
+     * @throws StaleObjectException
+     * @throws \Throwable
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $errors = [];
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (!empty($post = Yii::$app->request->post())) {
+            $postComponentIds = $post['components'];
+            unset($post['components']);
+
+            if (count($postComponentIds) > 1) {
+                if ($model->load($post) && $model->save()) {
+                    /** @var RecipeComponent[] $existsRC */
+                    $existsRC = $model->getRecipeComponents()->all();
+                    foreach ($existsRC as $modelRC) {
+                        $modelRC->delete();
+                    }
+                    foreach ($postComponentIds as $key => $componentId) {
+                        if (!empty($componentId)) {
+                            $modelRecipeComponent = new RecipeComponent();
+                            $modelRecipeComponent->recipe_id = $model->id;
+                            $modelRecipeComponent->component_id = $componentId;
+                            $modelRecipeComponent->save();
+                        }
+                    }
+
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                $errors['notEnoughComponents'] = 1;
+            }
+        }
+
+        $components = [];
+        $componentModels = (new ComponentSearch())->search([])->models;
+        foreach ($componentModels as $componentModel) {
+            $components[$componentModel->id] = $componentModel->name;
+        }
+
+        $selectedComponents = [];
+        foreach ($this->findComponents($id, FALSE) as $key => $component) {
+            $selectedComponents[] = $component->id;
         }
 
         return $this->render('update', [
             'model' => $model,
+            'components' => $components,
+            'selectedComponents' => $selectedComponents,
+            'errors' => $errors
         ]);
     }
 
@@ -150,6 +197,9 @@ class RecipeController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        foreach (RecipeComponent::findAll(['recipe_id' => $id]) as $rcModel) {
+            $rcModel->delete();
+        }
 
         return $this->redirect(['index']);
     }
