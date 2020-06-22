@@ -96,7 +96,7 @@ class SiteController extends Controller
             if (count($selectedComponents) < 2) {
                 $errors['notEnoughComponents'] = 1;
             } else {
-                $foundRecipes = RecipeSearch::findByComponentIds($selectedComponents, $components);
+                $foundRecipes = RecipeSearch::findByComponentIds($selectedComponents);
                 if (empty($foundRecipes)) {
                     $errors['notFoundRecipes'] = 1;
                 } else {

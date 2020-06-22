@@ -68,34 +68,40 @@ class RecipeSearch extends Recipe
 
     /**
      * @param array $componentIds
-     * @param array $existsComponents
      * @return array|ActiveRecord[]|null
      */
-    public static function findByComponentIds($componentIds, $existsComponents)
+    public static function findByComponentIds($componentIds)
     {
-        $sql = 'SELECT r.* FROM recipe_component as rc
-                    INNER JOIN recipe as r
-                    ON rc.recipe_id = r.id 
+        $resultFull = [];
+        $resultPart = [];
+        $sql = 'SELECT r.*, COUNT(c.id) as comp_count 
+                    FROM recipe_component as rc
+                    LEFT JOIN component as c
+                    ON c.id = rc.component_id 
+                    LEFT JOIN recipe as r
+                    ON r.id = rc.recipe_id 
+                    WHERE (component_id IN (' . implode(',', $componentIds) . '))
+                    AND c.isHidden = 0 
+                    GROUP BY rc.recipe_id HAVING comp_count > 1 ORDER BY comp_count DESC
          ';
-        foreach ($componentIds as $key => $componentId) {
-            unset($existsComponents[$componentId]);
+
+        $RCactiveQuery = Recipe::findBySql($sql);
+        $RCArray = $RCactiveQuery->asArray()->all();
+        $RCs = $RCactiveQuery->asArray(FALSE)->all();
+        foreach ($RCArray as $key =>$RC) {
+            $components = RecipeComponent::find()->where(['recipe_id' => $RC['id']])->all();
+            $resultPart[] = $RCs[$key];
+            if ($RC['comp_count'] == count($components) && count($components) == count($componentIds)) {
+                $resultFull[] = $RCs[$key];
+            }
         }
 
-        if (!empty($existsComponents)) {
-            $sql .= ' WHERE NOT (rc.component_id IN (' . implode(',', array_keys($existsComponents)) . ')) ';
-        }
-        $sqlEnd = ' GROUP BY rc.component_id HAVING COUNT(rc.component_id) = ' . count($componentIds);
-        $result = Recipe::findBySql($sql . $sqlEnd)->all();
-
-        if (!empty($result)) {
-            return $result;
+        if (!empty($resultFull)) {
+            return $resultFull;
         }
 
-        $sqlEnd = ' GROUP BY rc.recipe_id HAVING COUNT(rc.component_id) > 1 ORDER BY COUNT(rc.component_id) DESC';
-        $result = Recipe::findBySql($sql . $sqlEnd)->all();
-
-        if (!empty($result)) {
-            return $result;
+        if (!empty($resultPart)) {
+            return $resultPart;
         }
 
         return NULL;
