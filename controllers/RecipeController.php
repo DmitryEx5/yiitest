@@ -39,6 +39,10 @@ class RecipeController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            $this->goHome();
+        }
+
         $searchModel = new RecipeSearch();
 
         $components = [];
@@ -77,6 +81,10 @@ class RecipeController extends Controller
      */
     public function actionView($id)
     {
+        if (Yii::$app->user->isGuest) {
+            $this->goHome();
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
             'components' => $this->findComponents($id, TRUE),
@@ -90,6 +98,10 @@ class RecipeController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->isGuest) {
+            $this->goHome();
+        }
+
         $model = new Recipe();
         $errors = [];
 
@@ -137,6 +149,9 @@ class RecipeController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->isGuest) {
+            $this->goHome();
+        }
         $model = $this->findModel($id);
         $errors = [];
 
@@ -196,6 +211,9 @@ class RecipeController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->isGuest) {
+            $this->goHome();
+        }
         $this->findModel($id)->delete();
         foreach (RecipeComponent::findAll(['recipe_id' => $id]) as $rcModel) {
             $rcModel->delete();
