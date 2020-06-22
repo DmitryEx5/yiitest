@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Component */
 
-$this->title = 'Create Component';
-$this->params['breadcrumbs'][] = ['label' => 'Components', 'url' => ['index']];
+$this->title = 'Добавить ингредиент';
+$this->params['breadcrumbs'][] = ['label' => 'Ингредиенты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="component-create">

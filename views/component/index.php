@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\ComponentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Components';
+$this->title = 'Ингредиенты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="component-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Component', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить ингредиент', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

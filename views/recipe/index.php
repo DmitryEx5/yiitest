@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $componentColumns array */
 
-$this->title = 'Recipes';
+$this->title = 'Список блюд';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="recipe-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Recipe', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Новое блюдо', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

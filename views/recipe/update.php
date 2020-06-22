@@ -8,10 +8,10 @@ use yii\helpers\Html;
 /* @var $selectedComponents array */
 /* @var $errors array */
 
-$this->title = 'Update Recipe: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Recipes', 'url' => ['index']];
+$this->title = 'Изменить блюдо: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Блюда', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Редактировать';
 ?>
 <div class="recipe-update">
 

@@ -17,10 +17,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(['id' => 'recipe_form']); ?>
 
     <div class="row">
-        <div class="col-md-2">
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-2">
+        <div class="col-md-five">
             <label class="control-label" for="components[0]">Ингредиент</label>
             <?= yii\helpers\Html::dropDownList('components[0]', $model->id == NULL
                 ? NULL
@@ -35,7 +32,7 @@ use yii\widgets\ActiveForm;
                     'id' => 'component[0]',
                 ]); ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-five">
             <label class="control-label" for="components[1]">Ингредиент</label>
             <?= yii\helpers\Html::dropDownList('components[1]', $model->id == NULL
                 ? NULL
@@ -50,7 +47,7 @@ use yii\widgets\ActiveForm;
                     'id' => 'component[1]',
                 ]); ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-five">
             <label class="control-label" for="components[2]">Ингредиент</label>
             <?= yii\helpers\Html::dropDownList('components[2]', $model->id == NULL
                 ? NULL
@@ -65,7 +62,7 @@ use yii\widgets\ActiveForm;
                     'id' => 'component[2]',
                 ]); ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-five">
             <label class="control-label" for="components[3]">Ингредиент</label>
             <?= yii\helpers\Html::dropDownList('components[3]', $model->id == NULL
                 ? NULL
@@ -80,7 +77,7 @@ use yii\widgets\ActiveForm;
                     'id' => 'component[3]',
                 ]); ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-five">
             <label class="control-label" for="components[4]">Ингредиент</label>
             <?= yii\helpers\Html::dropDownList('components[4]', $model->id == NULL
                 ? NULL
@@ -107,7 +104,7 @@ use yii\widgets\ActiveForm;
     <br>
 
     <div class="form-group">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Найти', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -2,7 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\Component;
+use app\models\ComponentSearch;
+use app\models\Recipe;
+use app\models\RecipeComponent;
+use app\models\RecipeSearch;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -59,10 +65,45 @@ class SiteController extends Controller
 
     /**
      * @return string
+     * @throws InvalidConfigException
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new Recipe();
+        $errors = [];
+        $foundRecipes = [];
+
+        /** @var array|Component[] $components */
+        $components = [];
+        $componentModels = (new ComponentSearch())->search([])->models;
+        foreach ($componentModels as $componentModel) {
+            $components[$componentModel->id] = $componentModel->name;
+        }
+
+        $post = Yii::$app->request->post();
+        if (!empty($post)) {
+            $componentIds = $post['components'];
+            foreach ($componentIds as $key => $componentId) {
+                if (empty($componentId)) {
+                    unset($componentIds[$key]);
+                }
+            }
+            if (count($componentIds) < 2) {
+                $errors['notEnoughComponents'] = 1;
+            } else {
+                $foundRecipes = RecipeSearch::findByComponentIds($componentIds, $components);
+                if (empty($foundRecipes)) {
+                    $errors['notFoundRecipes'] = 1;
+                }
+            }
+        }
+
+        return $this->render('index', [
+            'model' => $model,
+            'components' => $components,
+            'errors' => $errors,
+            'foundRecipes' => $foundRecipes,
+        ]);
     }
 
     /**
