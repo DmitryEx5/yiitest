@@ -73,27 +73,30 @@ class RecipeSearch extends Recipe
      */
     public static function findByComponentIds($componentIds, $existsComponents)
     {
-        $sql = 'SELECT * FROM `recipe` WHERE id IN 
-                    (SELECT recipe_id FROM `recipe_component`';
+        $sql = 'SELECT r.* FROM recipe_component as rc
+                    INNER JOIN recipe as r
+                    ON rc.recipe_id = r.id 
+         ';
         foreach ($componentIds as $key => $componentId) {
             $sql .= $key === 0 ? " WHERE " : " OR ";
-            $sql .= 'component_id = ' . $componentId;
+            $sql .= 'rc.component_id = ' . $componentId;
 
             unset($existsComponents[$componentId]);
         }
+        die(var_dump($existsComponents));
         if (!empty($existsComponents)) {
             foreach ($existsComponents as $id => $component) {
-                $sql .= ' AND component_id != ' . $id;
+                $sql .= ' AND rc.component_id != ' . $id;
             }
         }
-        $sqlEnd = ' GROUP BY recipe_id HAVING COUNT(recipe_id) = ' . count($componentIds) . ')';
+        $sqlEnd = ' GROUP BY rc.recipe_id HAVING COUNT(rc.recipe_id) = ' . count($componentIds);
         $result = Recipe::findBySql($sql . $sqlEnd)->all();
-
+        die(var_dump($sql.$sqlEnd));
         if (!empty($result)) {
             return $result;
         }
 
-        $sqlEnd = ' GROUP BY recipe_id HAVING COUNT(recipe_id) > 1 ORDER BY COUNT(recipe_id) DESC)';
+        $sqlEnd = ' GROUP BY rc.recipe_id HAVING COUNT(rc.recipe_id) > 1 ORDER BY COUNT(rc.recipe_id) DESC';
         $result = Recipe::findBySql($sql . $sqlEnd)->all();
 
         if (!empty($result)) {

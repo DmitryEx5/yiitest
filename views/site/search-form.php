@@ -19,11 +19,9 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-md-five">
             <label class="control-label" for="components[0]">Ингредиент</label>
-            <?= yii\helpers\Html::dropDownList('components[0]', $model->id == NULL
-                ? NULL
-                : isset($selectedComponents[0])
-                    ? $selectedComponents[0]
-                    : NULL,
+            <?= yii\helpers\Html::dropDownList('components[0]', isset($selectedComponents[0])
+                ? $selectedComponents[0]
+                : NULL,
                 $components,
                 [
                     'class' => 'form-control',
@@ -34,11 +32,9 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-md-five">
             <label class="control-label" for="components[1]">Ингредиент</label>
-            <?= yii\helpers\Html::dropDownList('components[1]', $model->id == NULL
-                ? NULL
-                : isset($selectedComponents[1])
-                    ? $selectedComponents[1]
-                    : NULL,
+            <?= yii\helpers\Html::dropDownList('components[1]', isset($selectedComponents[1])
+                ? $selectedComponents[1]
+                : NULL,
                 $components,
                 [
                     'class' => 'form-control',
@@ -49,11 +45,9 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-md-five">
             <label class="control-label" for="components[2]">Ингредиент</label>
-            <?= yii\helpers\Html::dropDownList('components[2]', $model->id == NULL
-                ? NULL
-                : isset($selectedComponents[2])
-                    ? $selectedComponents[2]
-                    : NULL,
+            <?= yii\helpers\Html::dropDownList('components[2]', isset($selectedComponents[2])
+                ? $selectedComponents[2]
+                : NULL,
                 $components,
                 [
                     'class' => 'form-control',
@@ -64,11 +58,9 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-md-five">
             <label class="control-label" for="components[3]">Ингредиент</label>
-            <?= yii\helpers\Html::dropDownList('components[3]', $model->id == NULL
-                ? NULL
-                : isset($selectedComponents[3])
-                    ? $selectedComponents[3]
-                    : NULL,
+            <?= yii\helpers\Html::dropDownList('components[3]', isset($selectedComponents[3])
+                ? $selectedComponents[3]
+                : NULL,
                 $components,
                 [
                     'class' => 'form-control',
@@ -79,9 +71,7 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-md-five">
             <label class="control-label" for="components[4]">Ингредиент</label>
-            <?= yii\helpers\Html::dropDownList('components[4]', $model->id == NULL
-                ? NULL
-                : isset($selectedComponents[4])
+            <?= yii\helpers\Html::dropDownList('components[4]', isset($selectedComponents[4])
                     ? $selectedComponents[4]
                     : NULL,
                 $components,
@@ -94,14 +84,15 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
-    <div class="row" id="components-error" <?= isset($errors['notEnoughComponents']) ? '' : 'style="display: none;"'?>>
+    <br>
+
+    <div class="row" id="components-error"
+         style="margin-bottom: 20px; <?= isset($errors['notEnoughComponents']) ? '' : 'display: none;' ?>">
         <div class="col-md-12">
             <div class="alert-danger text-center" style="padding: 15px"><strong>Выберите больше ингредиентов</strong>
             </div>
         </div>
     </div>
-
-    <br>
 
     <div class="form-group">
         <?= Html::submitButton('Найти', ['class' => 'btn btn-success']) ?>

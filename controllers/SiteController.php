@@ -9,6 +9,8 @@ use app\models\RecipeComponent;
 use app\models\RecipeSearch;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -72,6 +74,9 @@ class SiteController extends Controller
         $model = new Recipe();
         $errors = [];
         $foundRecipes = [];
+        $selectedComponents = [];
+        $componentColumns = [];
+        $dataProvider = NULL;
 
         /** @var array|Component[] $components */
         $components = [];
@@ -82,18 +87,38 @@ class SiteController extends Controller
 
         $post = Yii::$app->request->post();
         if (!empty($post)) {
-            $componentIds = $post['components'];
-            foreach ($componentIds as $key => $componentId) {
+            $selectedComponents = $post['components'];
+            foreach ($selectedComponents as $key => $componentId) {
                 if (empty($componentId)) {
-                    unset($componentIds[$key]);
+                    unset($selectedComponents[$key]);
                 }
             }
-            if (count($componentIds) < 2) {
+            if (count($selectedComponents) < 2) {
                 $errors['notEnoughComponents'] = 1;
             } else {
-                $foundRecipes = RecipeSearch::findByComponentIds($componentIds, $components);
+                $foundRecipes = RecipeSearch::findByComponentIds($selectedComponents, $components);
                 if (empty($foundRecipes)) {
                     $errors['notFoundRecipes'] = 1;
+                } else {
+                    $dataProvider = new ArrayDataProvider(
+                        [
+                            'allModels' => $foundRecipes,
+                            'pagination' => [
+                                'pageSize' => 10,
+                            ],
+                            'sort' => [
+                                'attributes' => ['id', 'name'],
+                            ],
+                        ]
+                    );
+                    foreach ($foundRecipes as $recipe) {
+                        $_components = $recipe->getComponentsAsArray();
+                        for ($i = 0; $i <= 4; $i++) {
+                            $componentColumns[$recipe->id][$i] = isset($_components[$i])
+                                ? $_components[$i]->name
+                                : '-';
+                        }
+                    }
                 }
             }
         }
@@ -103,6 +128,9 @@ class SiteController extends Controller
             'components' => $components,
             'errors' => $errors,
             'foundRecipes' => $foundRecipes,
+            'selectedComponents' => $selectedComponents,
+            'componentColumns' => $componentColumns,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
