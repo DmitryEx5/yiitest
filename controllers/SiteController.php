@@ -5,11 +5,8 @@ namespace app\controllers;
 use app\models\Component;
 use app\models\ComponentSearch;
 use app\models\Recipe;
-use app\models\RecipeComponent;
 use app\models\RecipeSearch;
 use Yii;
-use yii\base\InvalidConfigException;
-use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -67,7 +64,6 @@ class SiteController extends Controller
 
     /**
      * @return string
-     * @throws InvalidConfigException
      */
     public function actionIndex()
     {

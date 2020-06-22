@@ -27,7 +27,6 @@ class RecipeSearch extends Recipe
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
@@ -41,8 +40,6 @@ class RecipeSearch extends Recipe
     public function search($params)
     {
         $query = Recipe::find();
-
-        // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -88,7 +85,7 @@ class RecipeSearch extends Recipe
         $RCactiveQuery = Recipe::findBySql($sql);
         $RCArray = $RCactiveQuery->asArray()->all();
         $RCs = $RCactiveQuery->asArray(FALSE)->all();
-        foreach ($RCArray as $key =>$RC) {
+        foreach ($RCArray as $key => $RC) {
             $components = RecipeComponent::find()->where(['recipe_id' => $RC['id']])->all();
             $resultPart[] = $RCs[$key];
             if ($RC['comp_count'] == count($components) && count($components) == count($componentIds)) {

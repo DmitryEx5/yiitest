@@ -72,8 +72,8 @@ use yii\widgets\ActiveForm;
         <div class="col-md-five">
             <label class="control-label" for="components[4]">Ингредиент</label>
             <?= yii\helpers\Html::dropDownList('components[4]', isset($selectedComponents[4])
-                    ? $selectedComponents[4]
-                    : NULL,
+                ? $selectedComponents[4]
+                : NULL,
                 $components,
                 [
                     'class' => 'form-control',
