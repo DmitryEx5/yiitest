@@ -96,6 +96,19 @@ class SiteController extends Controller
                 if (empty($foundRecipes)) {
                     $errors['notFoundRecipes'] = 1;
                 } else {
+                    foreach ($foundRecipes as $key => $recipe) {
+                        $_components = $recipe->getComponentsAsArray();
+                        for ($i = 0; $i <= 4; $i++) {
+                            if (isset($_components[$i])) {
+                                if ($_components[$i]->isHidden == 1) {
+                                    unset($foundRecipes[$key]);
+                                }
+                                $componentColumns[$recipe->id][$i] = $_components[$i]->name;
+                            } else {
+                                $componentColumns[$recipe->id][$i] = '-';
+                            }
+                        }
+                    }
                     $dataProvider = new ArrayDataProvider(
                         [
                             'allModels' => $foundRecipes,
@@ -107,14 +120,6 @@ class SiteController extends Controller
                             ],
                         ]
                     );
-                    foreach ($foundRecipes as $recipe) {
-                        $_components = $recipe->getComponentsAsArray();
-                        for ($i = 0; $i <= 4; $i++) {
-                            $componentColumns[$recipe->id][$i] = isset($_components[$i])
-                                ? $_components[$i]->name
-                                : '-';
-                        }
-                    }
                 }
             }
         }
