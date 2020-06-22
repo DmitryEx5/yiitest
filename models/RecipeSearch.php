@@ -78,25 +78,20 @@ class RecipeSearch extends Recipe
                     ON rc.recipe_id = r.id 
          ';
         foreach ($componentIds as $key => $componentId) {
-            $sql .= $key === 0 ? " WHERE " : " OR ";
-            $sql .= 'rc.component_id = ' . $componentId;
-
             unset($existsComponents[$componentId]);
         }
-        die(var_dump($existsComponents));
+
         if (!empty($existsComponents)) {
-            foreach ($existsComponents as $id => $component) {
-                $sql .= ' AND rc.component_id != ' . $id;
-            }
+            $sql .= ' WHERE NOT (rc.component_id IN (' . implode(',', array_keys($existsComponents)) . ')) ';
         }
-        $sqlEnd = ' GROUP BY rc.recipe_id HAVING COUNT(rc.recipe_id) = ' . count($componentIds);
+        $sqlEnd = ' GROUP BY rc.component_id HAVING COUNT(rc.component_id) = ' . count($componentIds);
         $result = Recipe::findBySql($sql . $sqlEnd)->all();
-        die(var_dump($sql.$sqlEnd));
+
         if (!empty($result)) {
             return $result;
         }
 
-        $sqlEnd = ' GROUP BY rc.recipe_id HAVING COUNT(rc.recipe_id) > 1 ORDER BY COUNT(rc.recipe_id) DESC';
+        $sqlEnd = ' GROUP BY rc.recipe_id HAVING COUNT(rc.component_id) > 1 ORDER BY COUNT(rc.component_id) DESC';
         $result = Recipe::findBySql($sql . $sqlEnd)->all();
 
         if (!empty($result)) {
